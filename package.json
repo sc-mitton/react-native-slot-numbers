@@ -88,7 +88,11 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "@react-native-masked-view/masked-view": "*",
+    "expo-linear-gradient": "*",
+    "react-native-easing-gradient": "*",
+    "react-native-reanimated": "*"
   },
   "workspaces": [
     "example"
@@ -131,6 +135,7 @@
     ],
     "rules": {
       "react/react-in-jsx-scope": "off",
+      "react-hooks/exhaustive-deps": "off",
       "prettier/prettier": [
         "error",
         {
