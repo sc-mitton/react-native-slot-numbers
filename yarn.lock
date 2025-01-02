@@ -5126,7 +5126,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"conventional-changelog-angular@npm:^8.0.0":
+"conventional-changelog-angular@npm:^8.0.0, conventional-changelog-angular@npm:latest":
   version: 8.0.0
   resolution: "conventional-changelog-angular@npm:8.0.0"
   dependencies:
@@ -12167,6 +12167,7 @@ __metadata:
     "@types/jest": ^29.5.5
     "@types/react": ^18.2.44
     commitlint: ^17.0.2
+    conventional-changelog-angular: latest
     del-cli: ^5.1.0
     eslint: ^8.51.0
     eslint-config-prettier: ^9.0.0
