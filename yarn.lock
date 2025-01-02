@@ -3174,7 +3174,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-masked-view/masked-view@npm:0.3.2":
+"@react-native-masked-view/masked-view@npm:0.3.2, @react-native-masked-view/masked-view@npm:^0.3.2":
   version: 0.3.2
   resolution: "@react-native-masked-view/masked-view@npm:0.3.2"
   peerDependencies:
@@ -3814,11 +3814,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*":
-  version: 22.10.3
-  resolution: "@types/node@npm:22.10.3"
+  version: 22.10.4
+  resolution: "@types/node@npm:22.10.4"
   dependencies:
     undici-types: ~6.20.0
-  checksum: f42264d5afadb7eece4f068a9028cf752174796fe424f5f7385b6f700037240dc7bc6acd8ab11641424c39452dcf4d85be229f51dcc73ccd931eaa29924ffda7
+  checksum: df4afd23fee6f75f9ae6558794ca7b9fb92e5ff817e9ffcd26c67cd9a366dcb4f34f83184513b66646a54e2659adbd46cd4839d3268be11e2d74fde2d09c5f66
   languageName: node
   linkType: hard
 
@@ -12594,6 +12594,7 @@ __metadata:
   dependencies:
     "@commitlint/config-conventional": ^17.0.2
     "@evilmartians/lefthook": ^1.5.0
+    "@react-native-masked-view/masked-view": ^0.3.2
     "@react-native/eslint-config": ^0.73.1
     "@release-it/conventional-changelog": ^9.0.2
     "@types/jest": ^29.5.5
