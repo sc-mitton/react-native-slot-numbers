@@ -11,6 +11,14 @@ bun install react-native-slot-numbers @react-native-masked-view/masked-view reac
 
 This project was created using `bun init` in bun v1.1.21. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
 
+
+https://github.com/user-attachments/assets/f9fdb47c-92a7-45b2-93ea-72c0d36d729c
+
+
+https://github.com/user-attachments/assets/8964574b-a596-414f-95f9-42f53f60d781
+
+
+
 ## Usage
 
 ```
