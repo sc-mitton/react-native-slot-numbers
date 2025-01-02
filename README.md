@@ -1,5 +1,8 @@
 # react-native-slot-numbers
 
+This package was originally named react-native-slot-text, and has been migrated to this
+repo.
+
 To install dependencies:
 
 ```
