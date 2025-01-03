@@ -1,1 +1,1 @@
-export { default as SlotText } from './AnimatedNumbers';
+export { default as SlotNumbers } from './AnimatedNumbers';

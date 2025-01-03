@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import { useFonts } from 'expo-font';
-import { SlotText } from 'react-native-slot-numbers';
+import { SlotNumbers } from 'react-native-slot-numbers';
 import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
@@ -61,7 +61,7 @@ export default function App() {
       <StatusBar style="light" />
       <View style={styles.textContainer}>
         <View style={styles.text}>
-          <SlotText
+          <SlotNumbers
             value={value}
             prefix="$"
             fontStyle={styles.fontStyle}
