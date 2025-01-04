@@ -1,5 +1,9 @@
-import { useRef, useState, Fragment, useEffect } from 'react';
-import { Text, View } from 'react-native';
+import { useRef, useState, useEffect } from 'react';
+import { StyleSheet, Dimensions } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import MaskedView from '@react-native-masked-view/masked-view';
+import ReAnimated from 'react-native-reanimated';
+import { easeGradient } from 'react-native-easing-gradient';
 import Animated, {
   LinearTransition,
   Easing as ReEasing,
@@ -8,9 +12,15 @@ import Animated, {
 import ContinuousSlot from './ContinuousSlot';
 import styles from './styles';
 import type { AnimatedNumbersProps, ContinuousSlotProps } from './types';
-import { bezier_points, mass, damping, stiffness } from './constants';
+import {
+  bezier_points,
+  mass,
+  damping,
+  stiffness,
+  defaultAnimationDuration,
+} from './constants';
 
-const DEFAULT_DURATION = 700;
+const AnimatedMaskedView = ReAnimated.createAnimatedComponent(MaskedView);
 
 const ContinuousSlots = (props: AnimatedNumbersProps) => {
   const easing = bezier_points[props.easing || 'linear'] as [
@@ -22,7 +32,7 @@ const ContinuousSlots = (props: AnimatedNumbersProps) => {
   const idRef = useRef(
     `rn-continuous-slot-${Math.random().toString(36).substring(7)}`
   );
-  // [value, key]
+  const [firstRender, setFirstRender] = useState(true);
   const [slots, setSlots] = useState(
     props.value
       .toString()
@@ -35,10 +45,10 @@ const ContinuousSlots = (props: AnimatedNumbersProps) => {
           ] as ContinuousSlotProps['slot']
       )
   );
-  const [charSizes, setCharSizes] = useState<number[]>(
-    Array.from({ length: 10 }).map(() => 0)
-  );
-  const [sizesMeasured, setSizesMeasured] = useState(false);
+
+  useEffect(() => {
+    setFirstRender(false);
+  }, []);
 
   useEffect(() => {
     // Left parsing
@@ -74,9 +84,40 @@ const ContinuousSlots = (props: AnimatedNumbersProps) => {
     setSlots(parseFromLeft ? newSlots : newSlots.reverse());
   }, [props.value]);
 
+  const { colors, locations } = easeGradient({
+    colorStops: {
+      0: { color: 'transparent' },
+      0.2: { color: 'black' },
+      0.8: { color: 'black' },
+      1: { color: 'transparent' },
+    },
+  });
+
   return (
     <>
-      <View style={styles.slotsContainer}>
+      <AnimatedMaskedView
+        layout={
+          props.spring
+            ? LinearTransition.springify()
+                .mass(mass)
+                .stiffness(stiffness)
+                .damping(damping)
+            : LinearTransition.duration(
+                props.animationDuration || defaultAnimationDuration
+              ).easing(ReEasing.bezier(...easing).factory())
+        }
+        maskElement={
+          <LinearGradient
+            locations={locations as any}
+            colors={colors as any}
+            style={[
+              StyleSheet.absoluteFill,
+              { width: Dimensions.get('window').width },
+            ]}
+          />
+        }
+        style={styles.slotsContainer}
+      >
         {props.prefix && (
           <Animated.Text
             style={props.fontStyle}
@@ -110,42 +151,20 @@ const ContinuousSlots = (props: AnimatedNumbersProps) => {
             <ContinuousSlot
               slot={slot}
               index={i}
-              charSizes={charSizes}
               hasPeriod={hasPeriod}
               hasComma={hasComma}
+              firstRender={firstRender}
               key={`${idRef.current}-${slot[1]}`}
               fontStyle={props.fontStyle}
               easing={props.easing}
               spring={props.spring}
-              animationDuration={DEFAULT_DURATION}
+              animationDuration={
+                props.animationDuration || defaultAnimationDuration
+              }
             />
           );
         })}
-        <Text style={[styles.spacer, props.fontStyle]}>1</Text>
-      </View>
-      {!sizesMeasured &&
-        Array.from({ length: 10 }, (_, i) => i as string | number)
-          .concat([',', '.'])
-          .map((char, i) => (
-            <Fragment key={`rn-slots-measure-slot-${i}`}>
-              <Text
-                style={[styles.hiddenSlot, props.fontStyle]}
-                onLayout={(e) => {
-                  const charSize = e.nativeEvent.layout.width;
-                  setCharSizes((prev) => {
-                    const newSizes = [...prev];
-                    newSizes[i] = charSize;
-                    return newSizes;
-                  });
-                  if (char === '.') {
-                    setSizesMeasured(true);
-                  }
-                }}
-              >
-                {char}
-              </Text>
-            </Fragment>
-          ))}
+      </AnimatedMaskedView>
     </>
   );
 };

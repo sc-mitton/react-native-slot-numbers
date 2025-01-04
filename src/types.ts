@@ -36,15 +36,11 @@ export interface SlotProps {
   spring?: Spring;
 }
 
-type Shared =
-  | 'fontStyle'
-  | 'index'
-  | 'charSizes'
-  | 'animationDuration'
-  | 'spring';
+type Shared = 'fontStyle' | 'index' | 'animationDuration' | 'spring';
 
 export interface ContinuousSlotProps extends Pick<SlotProps, Shared> {
   slot: [number, string];
+  firstRender: boolean;
   hasComma: boolean;
   hasPeriod: boolean;
   spring?: Spring;

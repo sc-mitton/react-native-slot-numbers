@@ -23,7 +23,8 @@ const blue = 'hsl(221, 95%, 62%)';
 
 const tests = [
   35420, 15770, 298, 321, 45433, 51369, 69809, 73533, 668678, 194, 130933,
-  829769, 807919, 8079190,
+  829769,
+  // 807919, 8079190,
 ];
 
 export default function App() {
@@ -42,6 +43,7 @@ export default function App() {
   }, [fontsLoaded, fontError]);
 
   useEffect(() => {
+    if (testIndex === tests.length - 1) return;
     const timeout = setTimeout(() => {
       setTestIndex((testIndex + 1) % tests.length);
     }, 2000);
@@ -62,15 +64,29 @@ export default function App() {
       <View style={styles.textContainer}>
         <View style={styles.text}>
           <SlotNumbers
-            value={value}
+            value={
+              value
+              // 35420
+              // 15770
+              // 298
+              // 321
+              // 45433
+              // 51369
+              // 69809
+              // 73533
+              // 668678
+              // 194
+              // 130933
+              // 829769
+            }
             prefix="$"
             fontStyle={styles.fontStyle}
             includeComma={true}
-            // animationDuration={3000}
+            animationDuration={1000}
             animateIntermediateValues
             easing="in-out"
             // spring
-            // precision={2}
+            precision={2}
           />
         </View>
       </View>

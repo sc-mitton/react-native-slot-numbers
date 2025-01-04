@@ -7,12 +7,15 @@ const styles = StyleSheet.create({
   slotsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
+    height: '150%',
+    width: '100%',
   },
   slotContainer: {
     flexDirection: 'row',
     alignItems: 'flex-end',
   },
-  hiddenSlot: {
+  measureSlot: {
     position: 'absolute',
     opacity: 0,
   },
@@ -24,6 +27,9 @@ const styles = StyleSheet.create({
   },
   abs: {
     position: 'absolute',
+  },
+  hiddenSpacer: {
+    opacity: 0,
   },
 });
 

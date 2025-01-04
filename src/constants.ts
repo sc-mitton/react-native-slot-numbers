@@ -9,6 +9,9 @@ export const bezier_points: Record<
 
 const mass = 1;
 const damping = 20;
-const stiffness = 170;
+const stiffness = 160;
+const gap = 8;
 
-export { mass, damping, stiffness };
+const defaultAnimationDuration = 700;
+
+export { mass, damping, stiffness, gap, defaultAnimationDuration };

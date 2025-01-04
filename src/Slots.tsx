@@ -136,7 +136,7 @@ const Slots = (props: AnimatedNumbersProps) => {
             <Fragment key={`measure-slot-${i}`}>
               <Text
                 key={`slot-${i}`}
-                style={[styles.hiddenSlot, props.fontStyle]}
+                style={[styles.measureSlot, props.fontStyle]}
                 onLayout={(e) => {
                   if (i === 10) {
                     setSlotHeight(e.nativeEvent.layout.height);
