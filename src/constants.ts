@@ -6,3 +6,9 @@ export const bezier_points: Record<
   'linear': [0, 0, 1, 1],
   'out': [0, 0.4, 0.4, 0.9],
 };
+
+const mass = 1;
+const damping = 20;
+const stiffness = 170;
+
+export { mass, damping, stiffness };

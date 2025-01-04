@@ -44,7 +44,9 @@ type Shared =
   | 'spring';
 
 export interface ContinuousSlotProps extends Pick<SlotProps, Shared> {
-  slot: [number | string, string];
+  slot: [number, string];
+  hasComma: boolean;
+  hasPeriod: boolean;
   spring?: Spring;
   easing?: EasingT;
 }

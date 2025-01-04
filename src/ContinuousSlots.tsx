@@ -1,37 +1,39 @@
 import { useRef, useState, Fragment, useEffect } from 'react';
 import { Text, View } from 'react-native';
-import Animated, { LinearTransition } from 'react-native-reanimated';
+import Animated, {
+  LinearTransition,
+  Easing as ReEasing,
+} from 'react-native-reanimated';
 
 import ContinuousSlot from './ContinuousSlot';
 import styles from './styles';
 import type { AnimatedNumbersProps, ContinuousSlotProps } from './types';
+import { bezier_points, mass, damping, stiffness } from './constants';
 
 const DEFAULT_DURATION = 700;
 
 const ContinuousSlots = (props: AnimatedNumbersProps) => {
-  const formatter = new Intl.NumberFormat('en-US', {
-    style: 'decimal',
-    minimumFractionDigits: props.precision || 0,
-    maximumFractionDigits: props.precision || 0,
-  });
-
+  const easing = bezier_points[props.easing || 'linear'] as [
+    number,
+    number,
+    number,
+    number,
+  ];
   const idRef = useRef(
     `rn-continuous-slot-${Math.random().toString(36).substring(7)}`
   );
   // [value, key]
   const [slots, setSlots] = useState(
-    formatter
-      .format(props.value)
+    props.value
+      .toString()
       .split('')
-      .map((v) => {
-        const slotValue = Number.isFinite(parseInt(v, 10))
-          ? parseInt(v, 10)
-          : v;
-        return [
-          slotValue,
-          Math.random().toString(36).slice(0, 9),
-        ] as ContinuousSlotProps['slot'];
-      })
+      .map(
+        (v) =>
+          [
+            parseInt(v),
+            Math.random().toString(36).slice(0, 9),
+          ] as ContinuousSlotProps['slot']
+      )
   );
   const [charSizes, setCharSizes] = useState<number[]>(
     Array.from({ length: 10 }).map(() => 0)
@@ -47,21 +49,19 @@ const ContinuousSlots = (props: AnimatedNumbersProps) => {
     // _ _ _ _ _ _ old val
     const parseFromLeft =
       slots[0]?.[0] === parseInt(props.value.toString()[0]!, 10);
-    const formatted = props.includeComma
-      ? formatter.format(props.value).split('')
-      : `${props.value}`.split('');
+    const newSplitValue = props.value.toString().split('');
 
-    const parser = Array.from({ length: formatted.length }, (_, i) =>
-      parseFromLeft ? i : formatted.length - i - 1
+    const parser = Array.from({ length: newSplitValue.length }, (_, i) =>
+      parseFromLeft ? i : newSplitValue.length - i - 1
     );
     const newSlots = parser.map((index) => {
-      const slotValue = Number.isFinite(parseInt(formatted[index]!, 10))
-        ? parseInt(formatted[index]!, 10)
-        : formatted[index];
+      const slotValue = Number.isFinite(parseInt(newSplitValue[index]!, 10))
+        ? parseInt(newSplitValue[index]!, 10)
+        : newSplitValue[index];
 
       const parseIndex = parseFromLeft
         ? index
-        : index + (slots.length - formatted.length);
+        : index + (slots.length - newSplitValue.length);
 
       const slot =
         slots[parseIndex] === undefined
@@ -78,23 +78,49 @@ const ContinuousSlots = (props: AnimatedNumbersProps) => {
     <>
       <View style={styles.slotsContainer}>
         {props.prefix && (
-          <Animated.Text style={props.fontStyle} layout={LinearTransition}>
+          <Animated.Text
+            style={props.fontStyle}
+            layout={
+              props.animationDuration
+                ? LinearTransition.duration(props.animationDuration / 4).easing(
+                    ReEasing.bezier(...easing).factory()
+                  )
+                : LinearTransition.springify()
+                    .mass(mass)
+                    .stiffness(stiffness)
+                    .damping(damping)
+            }
+          >
             {props.prefix}
           </Animated.Text>
         )}
         {/* Spacer Text to make sure container height sizes right */}
-        {slots.map((slot, i) => (
-          <ContinuousSlot
-            slot={slot}
-            index={i}
-            charSizes={charSizes}
-            key={`${idRef.current}-${slot[1]}`}
-            fontStyle={props.fontStyle}
-            easing={props.easing}
-            spring={props.spring}
-            animationDuration={DEFAULT_DURATION}
-          />
-        ))}
+        {slots.map((slot, i) => {
+          const hasComma = props.includeComma
+            ? (slots.length - (props.precision || 0) - 1 - i) % 3 === 0 &&
+              i !== slots.length - (props.precision || 0) - 1
+            : false;
+
+          const hasPeriod =
+            props.precision && props.precision > 0
+              ? i === slots.length - props.precision - 1
+              : false;
+
+          return (
+            <ContinuousSlot
+              slot={slot}
+              index={i}
+              charSizes={charSizes}
+              hasPeriod={hasPeriod}
+              hasComma={hasComma}
+              key={`${idRef.current}-${slot[1]}`}
+              fontStyle={props.fontStyle}
+              easing={props.easing}
+              spring={props.spring}
+              animationDuration={DEFAULT_DURATION}
+            />
+          );
+        })}
         <Text style={[styles.spacer, props.fontStyle]}>1</Text>
       </View>
       {!sizesMeasured &&
