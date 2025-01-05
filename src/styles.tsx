@@ -7,8 +7,11 @@ const styles = StyleSheet.create({
   slotsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
+    height: '150%',
+    width: '100%',
   },
-  continuousSlotContainer: {
+  continuousSlotsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

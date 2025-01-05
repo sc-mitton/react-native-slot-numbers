@@ -116,7 +116,7 @@ const ContinuousSlots = (props: AnimatedNumbersProps) => {
             ]}
           />
         }
-        style={styles.slotsContainer}
+        style={styles.continuousSlotsContainer}
       >
         {props.prefix && (
           <Animated.Text

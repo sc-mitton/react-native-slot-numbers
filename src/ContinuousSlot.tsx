@@ -153,7 +153,7 @@ const ContinuousSlot = (props: ContinuousSlotProps) => {
 
   return (
     <ReAnimated.View
-      style={[styles.continuousSlotContainer]}
+      style={[styles.slotContainer]}
       layout={firstRender ? layoutAnimation : undefined}
       entering={
         props.firstRender
