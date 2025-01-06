@@ -1,12 +1,20 @@
 import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  // TouchableOpacity,
+  // Text,
+} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
 import { SlotNumbers } from 'react-native-slot-numbers';
 import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
+// import Entypo from '@expo/vector-icons/Entypo';
 
 import OpenRundeSemibold from '../assets/fonts/OpenRunde-Semibold.otf';
 
@@ -20,6 +28,16 @@ configureReanimatedLogger({
 });
 
 const blue = 'hsl(221, 95%, 62%)';
+
+// const backgroundColor = 'hsl(0, 0%, 0%)';
+// const gradientColors = [`rgba(0, 0, 0, 0)`, blue] as any;
+// const iconBackground = 'hsl(0, 0%, 10%)';
+// const iconColor = 'hsl(0, 0%, 50%)';
+
+const backgroundColor = 'hsl(0, 0%, 100%)';
+const gradientColors = [`rgba(255, 255, 255, 0)`, blue] as any;
+const iconBackground = 'hsl(0, 0%, 20%)';
+const iconColor = 'hsl(0, 0%, 100%)';
 
 const tests = [
   35420, 15770, 298, 321, 45433, 51369, 69809, 73533, 668678, 194, 130933,
@@ -60,6 +78,12 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <LinearGradient
+        style={styles.background}
+        colors={gradientColors}
+        start={[0, 0]}
+        end={[0, 1]}
+      />
       <StatusBar style="light" />
       <View style={styles.textContainer}>
         <View style={styles.text}>
@@ -82,14 +106,30 @@ export default function App() {
             prefix="$"
             fontStyle={styles.fontStyle}
             includeComma={true}
-            animationDuration={1000}
-            animateIntermediateValues
+            // animationDuration={1000}
+            // animateIntermediateValues
             easing="in-out"
             // spring
-            precision={2}
+            // precision={2}
           />
         </View>
       </View>
+      {/* <View style={styles.buttons}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={styles.button}
+          onPress={() => setValue((prev) => (prev += 1))}
+        >
+          <Entypo name="minus" size={24} color={iconColor} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={styles.button}
+          onPress={() => setValue((prev) => (prev += 1))}
+        >
+          <Entypo name="plus" size={24} color={iconColor} />
+        </TouchableOpacity>
+      </View> */}
     </View>
   );
 }
@@ -97,7 +137,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'hsl(0, 0%, 0%)',
+    backgroundColor: backgroundColor,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -109,6 +149,7 @@ const styles = StyleSheet.create({
     bottom: PADDING,
     borderRadius: 32,
     overflow: 'hidden',
+    opacity: 0.2,
     width: Dimensions.get('screen').width - PADDING * 2,
     height: BAR_HEIGHT,
   },
@@ -119,8 +160,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  icon: {
+    color: iconColor,
+    fontSize: 24,
+  },
   text: {
     position: 'absolute',
+  },
+  button: {
+    borderRadius: 24,
+    backgroundColor: iconBackground,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 32,
+    height: 32,
+  },
+  buttons: {
+    marginTop: 24,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 16,
   },
   sliderContainer: {
     paddingHorizontal: PADDING * 2,
