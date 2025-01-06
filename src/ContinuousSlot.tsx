@@ -12,6 +12,7 @@ import ReAnimated, {
   withSequence,
   useAnimatedStyle,
   interpolate,
+  cancelAnimation,
 } from 'react-native-reanimated';
 
 import styles from './styles';
@@ -48,12 +49,13 @@ const ContinuousSlot = (props: ContinuousSlotProps) => {
     `rn-slottext-slot-${Math.random().toString(36).slice(0, 9)}`
   );
 
-  const y = useSharedValue(0);
+  const y1 = useSharedValue(0);
+  const y2 = useSharedValue(0);
   const period = useSharedValue(props.hasPeriod ? 0 : -1);
   const comma = useSharedValue(props.hasComma ? 0 : -1);
+  const inProgress = useSharedValue(false);
 
   const [measuredHeight, setMeasuredHeight] = useState(0);
-  const [isMeasured, setIsMeasured] = useState(false);
   const [firstRender, setFirstRender] = useState(true);
 
   const layoutAnimation = props.spring
@@ -101,8 +103,12 @@ const ContinuousSlot = (props: ContinuousSlotProps) => {
     };
   });
 
-  const slotAnimation = useAnimatedStyle(() => ({
-    transform: [{ translateY: y.value }],
+  const slotAnimation1 = useAnimatedStyle(() => ({
+    transform: [{ translateY: y1.value }],
+  }));
+
+  const slotAnimation2 = useAnimatedStyle(() => ({
+    transform: [{ translateY: y2.value }],
   }));
 
   useEffect(() => {
@@ -113,14 +119,90 @@ const ContinuousSlot = (props: ContinuousSlotProps) => {
   }, []);
 
   useEffect(() => {
-    if (!isMeasured) return;
+    if (measuredHeight === 0 || (y1.value === 0 && y2.value === 0)) return;
 
-    const finalY = -1 * (gap + measuredHeight) * (9 - props.slot[0]);
-    y.value = props.spring
-      ? withSpring(finalY, reSpringConfig)
-      : withTiming(finalY, config, () => {
-          y.value = finalY;
-        });
+    if (inProgress.value) {
+      cancelAnimation(y1);
+      cancelAnimation(y2);
+    }
+
+    // - The wrapped component is the one where all of it's numbers are outside the window
+    // - During a 'wrapping' animation, the wrapped component changes because one is sliding
+    // entirely outside the window while the other previously wrapped component slides in.
+
+    const targetY = -1 * (gap + measuredHeight) * (9 - props.slot[0]);
+    const totalSlotHeight = (measuredHeight + gap) * 10;
+    const wrappedComponent =
+      y1.value <= 0 && y1.value >= -1 * totalSlotHeight ? 2 : 1;
+    const currentVal =
+      9 -
+      Math.round(
+        Math.abs(wrappedComponent === 2 ? y1.value : y2.value) /
+          (measuredHeight + gap)
+      );
+    const animationWillWrap = Math.abs(currentVal - props.slot[0]) > 5;
+
+    if (currentVal === props.slot[0]) return;
+
+    const slideDirection = animationWillWrap // 1: up -1: down
+      ? currentVal > 4
+        ? -1
+        : 1
+      : props.slot[0] > currentVal
+        ? -1
+        : 1;
+    // 1: wrapped component is above window, -1: is below
+    const wrappedPosition =
+      wrappedComponent === 1
+        ? y1.value < y2.value
+          ? 1
+          : -1
+        : y2.value < y1.value
+          ? 1
+          : -1;
+
+    const targetWrappedComponentY = animationWillWrap
+      ? slideDirection === 1
+        ? targetY - totalSlotHeight
+        : targetY + totalSlotHeight
+      : wrappedPosition === 1
+        ? targetY - totalSlotHeight
+        : targetY + totalSlotHeight;
+
+    const startY1 =
+      wrappedComponent === 1 && animationWillWrap
+        ? slideDirection === 1
+          ? y2.value + totalSlotHeight
+          : y2.value - totalSlotHeight
+        : y1.value;
+    const startY2 =
+      wrappedComponent === 2 && animationWillWrap
+        ? slideDirection === 1
+          ? y1.value + totalSlotHeight
+          : y1.value - totalSlotHeight
+        : y2.value;
+
+    let [finalY1, finalY2] = [0, 0];
+    if (animationWillWrap) {
+      finalY1 = wrappedComponent === 1 ? targetY : targetWrappedComponentY;
+      finalY2 = wrappedComponent === 2 ? targetY : targetWrappedComponentY;
+    } else {
+      finalY1 = wrappedComponent === 1 ? targetWrappedComponentY : targetY;
+      finalY2 = wrappedComponent === 2 ? targetWrappedComponentY : targetY;
+    }
+
+    y1.value = withSequence(
+      withTiming(startY1, { duration: 0 }, () => (inProgress.value = true)),
+      props.spring
+        ? withSpring(finalY1, reSpringConfig, () => (inProgress.value = false))
+        : withTiming(finalY1, config, () => (inProgress.value = false))
+    );
+    y2.value = withSequence(
+      withTiming(startY2, { duration: 0 }, () => (inProgress.value = true)),
+      props.spring
+        ? withSpring(finalY2, reSpringConfig, () => (inProgress.value = false))
+        : withTiming(finalY2, config, () => (inProgress.value = false))
+    );
   }, [props.slot]);
 
   useEffect(() => {
@@ -180,10 +262,23 @@ const ContinuousSlot = (props: ContinuousSlotProps) => {
               )
       }
     >
-      {isMeasured ? (
+      {measuredHeight ? (
         <>
           <ReAnimated.View layout={layoutAnimation}>
-            <ReAnimated.View style={[slotAnimation, { gap: gap }, styles.abs]}>
+            <ReAnimated.View style={[slotAnimation1, { gap: gap }, styles.abs]}>
+              {Array.from(
+                { length: 10 },
+                (_, i) => (9 - i) as string | number
+              ).map((i) => (
+                <Text
+                  style={[props.fontStyle, { height: measuredHeight }]}
+                  key={`${id}-${i}`}
+                >
+                  {i}
+                </Text>
+              ))}
+            </ReAnimated.View>
+            <ReAnimated.View style={[slotAnimation2, { gap: gap }, styles.abs]}>
               {Array.from(
                 { length: 10 },
                 (_, i) => (9 - i) as string | number
@@ -227,8 +322,10 @@ const ContinuousSlot = (props: ContinuousSlotProps) => {
             style={props.fontStyle}
             onLayout={({ nativeEvent: ne }) => {
               setMeasuredHeight(ne.layout.height);
-              y.value = -1 * ((gap + ne.layout.height) * (9 - props.slot[0]));
-              setIsMeasured(true);
+              const yValue =
+                -1 * ((gap + ne.layout.height) * (9 - props.slot[0]));
+              y1.value = yValue;
+              y2.value = yValue + (ne.layout.height + gap) * 10;
             }}
           >
             {props.slot[0]}
