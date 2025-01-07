@@ -63,10 +63,6 @@
           "hash": "7470771883213891234"
         },
         {
-          "file": "example/package-lock.json",
-          "hash": "17695333164883570269"
-        },
-        {
           "file": "example/package.json",
           "hash": "13605285128942872571",
           "deps": [
@@ -88,7 +84,7 @@
         },
         {
           "file": "example/src/App.tsx",
-          "hash": "16551327805820644219"
+          "hash": "15895448533047255303"
         },
         {
           "file": "example/tsconfig.json",
@@ -119,7 +115,7 @@
       },
       {
         "file": ".gitignore",
-        "hash": "14302573987020151298"
+        "hash": "14672004267944346092"
       },
       {
         "file": ".nvmrc",
@@ -171,7 +167,7 @@
       },
       {
         "file": "package.json",
-        "hash": "8340572724248051773"
+        "hash": "3544255533945668121"
       },
       {
         "file": "src/AnimatedNumbers.tsx",
@@ -179,11 +175,11 @@
       },
       {
         "file": "src/ContinuousSlot.tsx",
-        "hash": "11500535076902564724"
+        "hash": "4848121786780645541"
       },
       {
         "file": "src/ContinuousSlots.tsx",
-        "hash": "264540257350613176"
+        "hash": "7140465561680129560"
       },
       {
         "file": "src/Slot.tsx",
@@ -211,7 +207,7 @@
       },
       {
         "file": "src/styles.tsx",
-        "hash": "9382438397098932685"
+        "hash": "12324164885443605367"
       },
       {
         "file": "src/types.ts",

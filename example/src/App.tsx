@@ -108,8 +108,8 @@ export default function App() {
             includeComma={true}
             // animationDuration={1000}
             // animateIntermediateValues
-            easing="in-out"
-            // spring
+            // easing="in-out"
+            spring
             // precision={2}
           />
         </View>

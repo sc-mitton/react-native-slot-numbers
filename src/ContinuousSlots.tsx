@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { StyleSheet, Dimensions } from 'react-native';
+import { Text, View, StyleSheet, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
 import ReAnimated from 'react-native-reanimated';
@@ -94,7 +94,7 @@ const ContinuousSlots = (props: AnimatedNumbersProps) => {
   });
 
   return (
-    <>
+    <View style={styles.continuousSlotsContainer}>
       <AnimatedMaskedView
         layout={
           props.spring
@@ -116,7 +116,7 @@ const ContinuousSlots = (props: AnimatedNumbersProps) => {
             ]}
           />
         }
-        style={styles.continuousSlotsContainer}
+        style={styles.continuousSlotsMaskView}
       >
         {props.prefix && (
           <Animated.Text
@@ -165,7 +165,8 @@ const ContinuousSlots = (props: AnimatedNumbersProps) => {
           );
         })}
       </AnimatedMaskedView>
-    </>
+      <Text style={styles.hiddenSpacer}>1</Text>
+    </View>
   );
 };
 

@@ -3,6 +3,9 @@
 .DS_Store
 .envrc
 
+# Misc
+showcase
+
 # XDE
 .expo/
 

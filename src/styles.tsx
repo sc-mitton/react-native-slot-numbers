@@ -8,7 +8,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  continuousSlotsContainer: {
+  continuousSlotsContainer: {},
+  continuousSlotsMaskView: {
+    position: 'absolute',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
