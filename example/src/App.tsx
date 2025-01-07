@@ -107,7 +107,7 @@ export default function App() {
             fontStyle={styles.fontStyle}
             includeComma={true}
             // animationDuration={1000}
-            // animateIntermediateValues
+            animateIntermediateValues
             // easing="in-out"
             spring
             // precision={2}
