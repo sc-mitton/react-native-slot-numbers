@@ -4,8 +4,8 @@
   "description": "Slot machine style animated numbers for React Native",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
-  "types": "lib/typescript/index.d.ts",
   "module": "./lib/module/index.js",
+  "types: ": "lib/typescript/index.d.ts",
   "files": [
     "src",
     "lib",
