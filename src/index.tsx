@@ -1,2 +1,3 @@
-export { default as SlotNumbers } from './AnimatedNumbers';
+import SlotNumbers from './AnimatedNumbers';
+export default SlotNumbers;
 export type { AnimatedNumbersProps } from './types';
