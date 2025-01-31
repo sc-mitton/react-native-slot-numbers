@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import type { AnimatedNumbersProps } from './types';
 
 import ContinuousSlots from './ContinuousSlots';
@@ -29,7 +30,7 @@ import Slots from './Slots';
  *
  * @returns {JSX.Element} The animated number component with slots for digits and commas.
  */
-const AnimatedNumbers = (props: AnimatedNumbersProps) => {
+const AnimatedNumbers = memo((props: AnimatedNumbersProps) => {
   return (
     <>
       {props.animateIntermediateValues ? (
@@ -39,6 +40,6 @@ const AnimatedNumbers = (props: AnimatedNumbersProps) => {
       )}
     </>
   );
-};
+});
 
 export default AnimatedNumbers;
