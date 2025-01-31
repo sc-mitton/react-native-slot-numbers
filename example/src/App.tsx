@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
-import { SlotNumbers } from 'react-native-slot-numbers';
+import SlotNumbers from 'react-native-slot-numbers';
 import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
