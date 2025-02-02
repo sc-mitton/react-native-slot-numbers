@@ -262,14 +262,14 @@ const Slot = (props: SlotProps) => {
               {
                 transform: [
                   {
-                    rotateX: `${yA.interpolate({
+                    rotateX: yA.interpolate({
                       inputRange: [
                         (-1 * props.height) / 2,
                         0,
                         props.height / 2,
                       ],
-                      outputRange: [45, 0, -45],
-                    })}deg`,
+                      outputRange: ['45deg', '0deg', '-45deg'],
+                    }),
                   },
                 ],
               },
@@ -305,10 +305,10 @@ const Slot = (props: SlotProps) => {
             {
               transform: [
                 {
-                  rotateX: `${yB.interpolate({
+                  rotateX: yB.interpolate({
                     inputRange: [(-1 * props.height) / 2, 0, props.height / 2],
-                    outputRange: [45, 0, -45],
-                  })}deg`,
+                    outputRange: ['45deg', '0deg', '-45deg'],
+                  }),
                 },
               ],
             },
