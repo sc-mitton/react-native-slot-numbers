@@ -243,13 +243,13 @@ const ContinuousSlot = (props: ContinuousSlotProps) => {
           : props.spring
             ? FadeInUp.springify()
                 .withInitialValues({
-                  transform: [{ translateY: '-100%' }],
+                  transform: [{ translateY: measuredHeight }],
                 })
                 .mass(reSpringConfig.mass)
                 .stiffness(reSpringConfig.stiffness)
                 .damping(reSpringConfig.damping)
             : FadeInUp.withInitialValues({
-                transform: [{ translateY: '-100%' }],
+                transform: [{ translateY: measuredHeight }],
               })
                 .duration(props.animationDuration / 1.5)
                 .easing(ReEasing.bezier(...easing).factory())
