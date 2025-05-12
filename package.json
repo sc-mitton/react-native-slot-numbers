@@ -1,6 +1,6 @@
 {
   "name": "react-native-slot-numbers",
-  "version": "1.2.14",
+  "version": "1.2.15",
   "description": "Slot machine style animated numbers for React Native",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
